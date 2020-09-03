@@ -70,7 +70,7 @@ const SelectBox = styled.div<TSelectBox>`
   }
   .selected::after {
     content: "";
-    background: url("images/arrow_down.svg");
+    background: ${({ active }: TSelectBox) => `url("images/arrow_${active ? 'up' : 'down'}.svg");`}
     background-size: contain;
     background-repeat: no-repeat;
     margin-left: 30px;
@@ -80,11 +80,6 @@ const SelectBox = styled.div<TSelectBox>`
     top: 18px;
     right: 10px;
     transition: all 0.4s;
-  }
-  .option-container.active + .selected::after {
-    background: url("images/arrow_up.svg");
-    background-size: contain;
-    background-repeat: no-repeat;
   }
 `;
 
