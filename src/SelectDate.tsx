@@ -6,7 +6,8 @@ const Container = styled.div`
 `;
 
 type TSelectBox = {
-    active: boolean
+    active: boolean;
+    month: number;
 }
 const SelectBox = styled.div<TSelectBox>`
   display: flex;
@@ -62,9 +63,9 @@ const SelectBox = styled.div<TSelectBox>`
     margin-bottom: 8px;
     position: relative;
     order: 0;
-    .name {
+    p {
       display: inline-block;
-      color: rgba(0, 0, 0, 0.87);
+      color: ${({ month }: TSelectBox) => month ? 'blue' : 'rgba(0, 0, 0, 0.87)'};
       font-size: 16px;
     }
   }
@@ -99,7 +100,7 @@ export const SelectDate: FunctionComponent = () => {
 
     return (
         <Container>
-            <SelectBox active={active}>
+            <SelectBox active={active} month={selectedMonth}>
                 <div className="option-container">
                     {months.map((month, i) => (
                         <div className="option" key={i} onClick={() => handleSelectingOption(month)}>
@@ -110,7 +111,7 @@ export const SelectDate: FunctionComponent = () => {
                     ))}
                 </div>
                 <div className="selected" onClick={handleActive}>
-                    {selectedMonth > 0 ? `${selectedMonth}月` : `年`}
+                    <p>{selectedMonth || ''}月</p>
                 </div>
             </SelectBox>
         </Container>
