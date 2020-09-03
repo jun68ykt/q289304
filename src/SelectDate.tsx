@@ -1,11 +1,14 @@
-import React, { FunctionComponent, useRef } from "react";
+import React, { FunctionComponent, useState } from "react";
 import styled from "styled-components";
 
 const Container = styled.div`
   box-sizing: border-box;
 `;
 
-const SelectBox = styled.div`
+type TSelectBox = {
+    active: boolean
+}
+const SelectBox = styled.div<TSelectBox>`
   display: flex;
   width: 136px;
   flex-direction: column;
@@ -33,11 +36,11 @@ const SelectBox = styled.div`
       background: #fff;
       border-radius: 0 4px 4px 0;
     }
-  }
-  .active {
+  ${({active}) => active && `
     max-height: 150px;
     opacity: 1;
     overflow-y: scroll;
+  `}
   }
   .option,
   .selected {
@@ -86,44 +89,33 @@ const SelectBox = styled.div`
 `;
 
 export const SelectDate: FunctionComponent = () => {
-    const month = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-    const selected = useRef(null);
-    const optionContainer = useRef(null);
-    const optionList = useRef(null);
+    const months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+    const [active, setActive] = useState<boolean>(false);
+    const [selectedMonth, setSelectedMonth] = useState<number>(0);
 
-    // useRef使う前
-    // const selected = document.querySelector(".selected");
-    // const optionContainer = document.querySelector(".option-container");
-    // const optionsList = document.querySelectorAll(".option");
-    // selected.addEventListener("click", () => {
-    //   optionContainer.classList.toggle("active");
-    // });
-    // optionsList.forEach((o) => {
-    //   o.addEventListener("click", () => {
-    //     selected.innerHTML = o.querySelector("label").innerHTML;
-    //     optionContainer.classList.remove("active");
-    //   });
-    // });
-
-    const Click = () => {
-        console.log(selected.current);
-        console.log(optionContainer.current);
+    const handleActive = () => {
+        setActive(!active);
     };
+
+    const handleSelectingOption = (month: number) => {
+        setSelectedMonth(month);
+        setActive(false);
+    }
+
     return (
         <Container>
-            <SelectBox>
-                <div className="option-container" ref={optionContainer}>
-                    {month.map((month, i) => (
-                        <div className="option" key={i} ref={optionList}>
-                            <input type="radio" className="radio" />
+            <SelectBox active={active}>
+                <div className="option-container">
+                    {months.map((month, i) => (
+                        <div className="option" key={i} onClick={() => handleSelectingOption(month)}>
                             <label htmlFor="automobiles">
                                 <p className="name">{month}月</p>
                             </label>
                         </div>
                     ))}
                 </div>
-                <div className="selected" ref={selected} onClick={Click}>
-                    年
+                <div className="selected" onClick={handleActive}>
+                    {selectedMonth > 0 ? `${selectedMonth}月` : `年`}
                 </div>
             </SelectBox>
         </Container>
