@@ -36,7 +36,7 @@ const SelectBox = styled.div<TSelectBox>`
       background: #fff;
       border-radius: 0 4px 4px 0;
     }
-  ${({active}) => active && `
+  ${({ active }: TSelectBox) => active && `
     max-height: 150px;
     opacity: 1;
     overflow-y: scroll;
